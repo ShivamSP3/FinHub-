@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
  
       ),
-      home: Provider.of<UserProvider>(context).user.token.isEmpty ?   LoginScreen()
+      home: Provider.of<UserProvider>(context).user.token.isNotEmpty ?   LoginScreen()
        : BottomNav()
     
     );
