@@ -1,15 +1,18 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:async';
+
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node_auth/features/Account/account_screen.dart';
 import 'package:flutter_node_auth/features/Chart/chart.dart';
-import 'package:flutter_node_auth/features/news/news.dart';
+import 'package:flutter_node_auth/features/news/screens/news.dart';
+import 'package:flutter_node_auth/features/news/widget/news_shimmer.dart';
 import 'package:flutter_node_auth/features/portfolio/Widget/portfolio.dart';
 import 'package:flutter_node_auth/features/watchlist/screens/watchlist.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({super.key});
+    BottomNav({super.key,});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -17,8 +20,9 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 0;
-  List<Widget> pages = const [
-    WatchList(),
+  List<Widget> pages =  [
+    WatchList(
+    ),
     Charting(),
     PortFolio(),
     NewsSection(),

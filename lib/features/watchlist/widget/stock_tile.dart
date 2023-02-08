@@ -6,14 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class StockTile extends StatefulWidget {
   final String stockName;
-  final double ltp;
-  final double avg;
+  final String ltp;
+  final String prev;
 
   const StockTile({
     super.key,
     required this.stockName,
     required this.ltp,
-    required this.avg,
+    required this.prev,
   });
 
   @override
@@ -24,23 +24,20 @@ class _StockTileState extends State<StockTile> {
   double change = 0;
   double pnl = 0;
 
+
+
+  Widget build(BuildContext context) {
+  int prevP = double.parse(widget.prev).toInt();
+  int ltP = double.parse(widget.ltp).toInt();
   updateChangePer() {
-    if (widget.avg < widget.ltp) {
-      change = (widget.ltp - widget.avg) / widget.avg * 100;
+    if (prevP < ltP) {
+      change = (ltP - prevP) / prevP * 100;
       return change.toStringAsFixed(2);
     } else {
-      change = (widget.avg - widget.ltp) / widget.avg * 100;
+      change = (prevP - ltP) / prevP * 100;
       return change.toStringAsFixed(2);
     }
   }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  Widget build(BuildContext context) {
     return InkWell(
       onTap: () => showBottomSheet(
         elevation: 10.0,
@@ -64,7 +61,7 @@ class _StockTileState extends State<StockTile> {
                   Row(
                     children: [
                       Text('NSE   ',style: TextStyle(color: Colors.black54),),
-                       widget.avg < widget.ltp?
+                       prevP < ltP?
                       Text(
                         widget.ltp.toString() + "    ",
                         style: TextStyle(color: Colors.green),
@@ -72,16 +69,16 @@ class _StockTileState extends State<StockTile> {
                         widget.ltp.toString() + "    ",
                         style: TextStyle(color: Colors.red),
                       ),
-                      widget.avg > widget.ltp
+                      prevP > ltP
                           ? Text(
-                              "-${(widget.avg - widget.ltp).toStringAsFixed(2)}" +
+                              "-${(prevP - ltP).toStringAsFixed(2)}" +
                                   "(" +
                                   updateChangePer() +
                                   "%)",
                               style: TextStyle(color: Colors.black54),
                             )
                           : Text(
-                              "+${(widget.ltp - widget.avg).toStringAsFixed(2)}" +
+                              "+${(ltP - prevP).toStringAsFixed(2)}" +
                                   "(" +
                                   updateChangePer() +
                                   "%)",
@@ -142,7 +139,7 @@ class _StockTileState extends State<StockTile> {
                         style: TextStyle(
                             color: Colors.black87, fontWeight: FontWeight.w200),
                       ),
-                      widget.avg < widget.ltp
+                      prevP < ltP
                           ? Text(
                               widget.ltp.toString(),
                               style:
@@ -164,16 +161,16 @@ class _StockTileState extends State<StockTile> {
                         'NSE',
                         style: TextStyle(color: Colors.black45),
                       ),
-                      widget.avg > widget.ltp
+                      prevP > ltP
                           ? Text(
-                              "-${(widget.avg - widget.ltp).toStringAsFixed(2)}" +
+                              "-${(prevP - ltP).toStringAsFixed(2)}" +
                                   "(" +
                                   updateChangePer() +
                                   "%)",
                               style: TextStyle(color: Colors.black45),
                             )
                           : Text(
-                              "+${(widget.ltp - widget.avg).toStringAsFixed(2)}" +
+                              "+${(ltP - prevP).toStringAsFixed(2)}" +
                                   "(" +
                                   updateChangePer() +
                                   "%)",

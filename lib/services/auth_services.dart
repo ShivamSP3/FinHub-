@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter_node_auth/features/widgets/bottom_nav.dart';
@@ -64,7 +66,7 @@ class AuthService{
          userProvider.setUser(res.body);
          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
          navigator.pushAndRemoveUntil(MaterialPageRoute(
-          builder: (context) => const BottomNav(),),
+          builder: (context) =>  BottomNav(),),
            (route) => false);
        },);
     } catch (e) {

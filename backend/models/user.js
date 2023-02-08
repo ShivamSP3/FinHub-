@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const {stockSchema} = require('./stock.js')
 const userSchema = mongoose.Schema({
     name:{
         type : String,
@@ -21,7 +21,8 @@ const userSchema = mongoose.Schema({
     password:{
         required:true,
         type:String
-    }
+    },
+    trades:[stockSchema]
 });
 const User = mongoose.model('User',userSchema);
 

@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_node_auth/features/watchlist/widget/stock_shimmer.dart';
 import 'package:flutter_node_auth/features/watchlist/widget/stock_tile.dart';
-
+import 'package:flutter_node_auth/models/stocks.dart';
+import 'package:flutter_node_auth/services/stocks_services.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 class WatchList extends StatefulWidget {
   const WatchList({super.key});
 
@@ -11,6 +16,24 @@ class WatchList extends StatefulWidget {
 }
 
 class _WatchListState extends State<WatchList> {
+    StreamController<StocksQuotes> _streamController = StreamController();
+   
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _streamController.close();
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      StockServices().getStocksPrice(_streamController);
+     });
+
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,53 +81,64 @@ class _WatchListState extends State<WatchList> {
                 ),
               ]),
             ),
-            body: SingleChildScrollView(
-              child: Center(
-                  child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          labelText: "   Search and Add to Watchlist",
-                          prefixIcon: Icon(Icons.search, size: 40),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide:
-                                BorderSide(width: 1.5, color: Colors.pink),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.grey),
-                          )),
-                    ),
-                  ),
-                  // Column(children: [SizedBox(
-                  //   height: MediaQuery.of(context).size.height * 0.1,
-                  // ),
-                  // Image.network(
-                  //     'https://pluspng.com/img-png/stock-market-png-stock-market-icon-256.png'),
-                  // Text(
-                  //   "Add Stocks To Watchlist",
-                  //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),],)
-                  StockTile(stockName: 'TCS', ltp: 3460.40, avg: 3408.35),
-                  StockTile(stockName: 'BAJFINANCE', ltp: 5717.65, avg: 5713.90),
-                  StockTile(stockName: 'HDFC', ltp: 2614.00, avg: 2614.30),
-                  StockTile(stockName: 'SBIN', ltp: 523.05, avg: 529.70),
-                  StockTile(stockName: 'AXISBANK', ltp: 869.45, avg: 868.65),
-                  StockTile(stockName: 'INFY', ltp: 1581.00, avg: 1584.90),
-                  StockTile(stockName: 'ADANIENT', ltp: 1565.25, avg: 2135.35),
-           
-
-                ],
-              )),
-            ),
+            body: 
+           StreamBuilder<StocksQuotes>(
+          stream: _streamController.stream,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return StockShimmer();
+              default:
+                if (snapshot.hasError) {
+                  return Center(child: Text('Please Wait'));
+                } else {
+                  return Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                      Text(snapshot.data!.latestData[0].indexName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
+                      
+                      
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                      Text(snapshot.data!.latestData[0].ltp+"   " ,style: TextStyle(fontSize: 20,                      fontWeight: FontWeight.w100)),
+                      (snapshot.data!.latestData[0].ch.startsWith("-")) ? 
+                      Text( snapshot.data!.latestData[0].ch+"   "+
+                                 snapshot.data!.latestData[0].per +"%",style: TextStyle(color: Colors.red,fontSize: 16,fontWeight: FontWeight.w100))
+                       : Text( snapshot.data!.latestData[0].ch+"   "+
+                                 snapshot.data!.latestData[0].per +"%",style: TextStyle(color: Colors.green,fontSize: 16,fontWeight: FontWeight.w100)),
+                       
+                        ],
+                      )
+                         ],
+                        ),
+                      ),
+                      Expanded(child: GetStockDetailWidget(snapshot.data!)),
+                    ],
+                  );
+                }
+            }
+          },
+        ),
+      
+         
           )),
     );
+  }
+   Widget GetStockDetailWidget(StocksQuotes stocksQuotes) {
+    return Center(
+        child: ListView.builder(
+      itemCount: stocksQuotes.data.length,
+      itemBuilder: (context, index) {
+        return StockTile(
+            stockName: stocksQuotes.data[index].symbol,
+            ltp: stocksQuotes.data[index].ltP.replaceAll(",", ''),
+            prev: stocksQuotes.data[index].previousClose.replaceAll(",", ''));
+      },
+    ));
   }
 }
