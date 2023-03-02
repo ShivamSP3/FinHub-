@@ -22,8 +22,9 @@ class _PortFolioState extends State<PortFolio> {
             bottom: TabBar(
               isScrollable: false,
               tabs: [
+               Tab(child: Text('Positions',style: TextStyle(color: Colors.black),),),
               Tab(child: Text('Holdings',style: TextStyle(color: Colors.black),),),
-               Tab(child: Text('Positions',style: TextStyle(color: Colors.black),),)
+
             ]),
              toolbarHeight:70,backgroundColor: Colors.white,
               title : Row(
@@ -36,8 +37,9 @@ class _PortFolioState extends State<PortFolio> {
               elevation: 0.0,
              ),
               body: TabBarView(children: [
-              Holdings(),
-             Positions()
+             
+             Positions(),
+              Holdings()
           ])
         ),
       ),

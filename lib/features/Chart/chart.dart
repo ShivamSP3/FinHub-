@@ -37,7 +37,7 @@ class _ChartingState extends State<Charting> {
         body: Center(
           child: (
             WebView(
-            initialUrl: 'https://in.tradingview.com/chart/RHahYkGW/',
+            initialUrl: 'https://in.tradingview.com/chart/',
             userAgent: 'random',
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {},

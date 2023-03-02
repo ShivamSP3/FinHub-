@@ -176,6 +176,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      sha256: "2ba20a47c8f1f233bed775ba2dd0d3ac97b4cf32fc17731b3dfc672b06b0e92a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.5"
   http:
     dependency: "direct main"
     description:
@@ -541,6 +549,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  swipeable_button_flutter:
+    dependency: "direct main"
+    description:
+      name: swipeable_button_flutter
+      sha256: "4b5ad2750d749b8169d01a402fa675f4f58df33aaffd2543c3acb6559736c4e6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
+  swipebuttonflutter:
+    dependency: "direct main"
+    description:
+      name: swipebuttonflutter
+      sha256: "7e05c0161c53ea801176ed04eb373bb5adc3cc07f4d35c8043d81783078c2034"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   synchronized:
     dependency: transitive
     description:
@@ -589,14 +613,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  web_socket_channel:
-    dependency: "direct main"
-    description:
-      name: web_socket_channel
-      sha256: ca49c0bc209c687b887f30527fb6a9d80040b072cc2990f34b9bec3e7663101b
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   webview_flutter:
     dependency: "direct main"
     description:
@@ -654,5 +670,5 @@ packages:
     source: hosted
     version: "6.1.0"
 sdks:
-  dart: ">=2.18.2 <3.0.0"
+  dart: ">=2.18.4 <3.0.0"
   flutter: ">=3.3.0"

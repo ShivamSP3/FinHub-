@@ -6,6 +6,7 @@ import 'package:flutter_node_auth/features/widgets/bottom_nav.dart';
 import 'package:flutter_node_auth/providers/userprovider.dart';
 import 'package:flutter_node_auth/features/auth/login_screen.dart';
 import 'package:flutter_node_auth/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ class AuthService{
     required String password,
   })async{
     try {
-      User user = User(id: '', name: name, email: email, 
+      User user = User(id: '', name: name, email: email, trades: [],
       token: '', password: password);
 
       http.Response res = await http.post(Uri.parse('${Constants.uri}/api/signup'),
@@ -36,7 +37,9 @@ class AuthService{
       httpErrorHandling(response: res,
       context: context, 
       onSuccess: () {
-        showSnackBar(context, 'Account created login with the same credentials');
+              Get.snackbar(
+              margin: EdgeInsets.all(10),
+              'Sign Up Success', 'Account created login with the same credentials!'); 
       });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -62,7 +65,8 @@ class AuthService{
       );
       httpErrorHandling(response: res,
          context: context, onSuccess: ()async {
-         SharedPreferences prefs = await SharedPreferences.getInstance();
+      Get.snackbar( margin: EdgeInsets.all(10),'Log In', 'You are logged in successfully!');         
+    SharedPreferences prefs = await SharedPreferences.getInstance();
          userProvider.setUser(res.body);
          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
          navigator.pushAndRemoveUntil(MaterialPageRoute(

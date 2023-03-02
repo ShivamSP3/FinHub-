@@ -22,7 +22,9 @@ const userSchema = mongoose.Schema({
         required:true,
         type:String
     },
-    trades:[stockSchema]
+    trades:[
+        stockSchema,
+    ]
 });
 const User = mongoose.model('User',userSchema);
 

@@ -4,7 +4,7 @@ import 'package:flutter_node_auth/models/user.dart';
 
 class UserProvider extends ChangeNotifier{
   User _user = User(id: '',
-   name: '', email: '',
+   name: '', email: '',trades: [],
     token: '', password: '');
 
   User get user => _user;

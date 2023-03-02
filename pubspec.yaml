@@ -45,7 +45,9 @@ dependencies:
   flutter_svg: ^1.1.6
   provider: ^6.0.5
   shimmer: ^2.0.0  
-  web_socket_channel: ^2.3.0
+  get: ^4.6.5
+  swipeable_button_flutter: ^0.0.3
+  swipebuttonflutter: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

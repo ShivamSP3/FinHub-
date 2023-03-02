@@ -28,12 +28,16 @@ void httpErrorHandling({
     onSuccess();
     break;
     case 400:
+    print('400');
+
     showSnackBar(context, jsonDecode(response.body)['msg']);
     break;
     case 500:
+    print('500');
     showSnackBar(context, jsonDecode(response.body)['error']);
     break;
     default:
+    print('default');
     showSnackBar(context,response.body);
   }
 }

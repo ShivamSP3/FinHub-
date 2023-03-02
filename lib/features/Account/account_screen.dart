@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node_auth/providers/userprovider.dart';
 import 'package:flutter_node_auth/services/auth_services.dart';
+import 'package:flutter_node_auth/services/stocks_services.dart';
 import 'package:flutter_node_auth/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -16,18 +18,27 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+   
+   final StockServices stockServices = StockServices();
+ String? status;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     AuthService().getUserData(context);
+    fetchStatus();
+  
+  }
+ fetchStatus()async{
+    status  = await stockServices.marketStatus();
+    setState(() {
+    });
   }
   @override
   Widget build(BuildContext context) {
     Uint8List? _file;
  
     UserProvider user = Provider.of<UserProvider>(context);
-
     _selectImage(BuildContext context) async {
       return showDialog(
         context: context,
@@ -170,7 +181,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 )),
             // Generated code for this isDarkMode Widget...
-            Field('Funds', Icons.currency_rupee, () {}),
+            Field('Funds', Icons.currency_rupee, () {
+            
+
+            }),
             Field('Profile', Icons.person, () {}),
             Field('Settings', Icons.settings, () {}),
             Field('Contact Us', Icons.call, () {}),
