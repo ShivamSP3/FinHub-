@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_auth/providers/userprovider.dart';
 import 'package:flutter_node_auth/services/auth_services.dart';
 import 'package:flutter_node_auth/services/stocks_services.dart';
+import 'package:flutter_node_auth/utils/theme.dart';
 import 'package:flutter_node_auth/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,68 +20,19 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
    
-   final StockServices stockServices = StockServices();
  String? status;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+     
     AuthService().getUserData(context);
-    fetchStatus();
   
   }
- fetchStatus()async{
-    status  = await stockServices.marketStatus();
-    setState(() {
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
-    Uint8List? _file;
- 
     UserProvider user = Provider.of<UserProvider>(context);
-    _selectImage(BuildContext context) async {
-      return showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text('Add Profile Photo'),
-            children: [
-              SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Take a photo'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.camera);
-                  setState(() {
-                    _file = file;
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Choose from gallery'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.gallery);
-                  setState(() {
-                    _file = file;
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Cancel '),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    }
-
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 60,
@@ -180,13 +132,21 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                 )),
-            // Generated code for this isDarkMode Widget...
-            Field('Funds', Icons.currency_rupee, () {
-            
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                
 
+                ],
+              ),
+            ),
+            Field('Funds', Icons.currency_rupee, () {
             }),
             Field('Profile', Icons.person, () {}),
-            Field('Settings', Icons.settings, () {}),
+            Field('Settings', Icons.settings, () {
+              
+            }),
             Field('Contact Us', Icons.call, () {}),
             Field('Logout', Icons.logout, () {
               AuthService().signOut(context);

@@ -21,7 +21,7 @@ class Positions extends StatefulWidget {
 class _PositionsState extends State<Positions> {
     List<Order>? orders=[];
     final StockServices stockServices = StockServices();
-  StreamController<StocksQuotes> _streamController = StreamController();
+  StreamController<StocksQuotes> _streamController = StreamController.broadcast();
 
   @override
   void dispose() {
@@ -102,7 +102,7 @@ class _PositionsState extends State<Positions> {
             // )
         
             StreamBuilder<StocksQuotes>(
-            stream: _streamController.stream,
+            stream: _streamController.stream ,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:

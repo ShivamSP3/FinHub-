@@ -65,7 +65,7 @@ class AuthService{
       );
       httpErrorHandling(response: res,
          context: context, onSuccess: ()async {
-      Get.snackbar( margin: EdgeInsets.all(10),'Log In', 'You are logged in successfully!');         
+      Get.snackbar( margin: EdgeInsets.all(10),'Message', 'You are logged in successfully!');         
     SharedPreferences prefs = await SharedPreferences.getInstance();
          userProvider.setUser(res.body);
          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);

@@ -6,17 +6,20 @@ import 'package:flutter_node_auth/features/watchlist/screens/buy_screen.dart';
 import 'package:flutter_node_auth/features/watchlist/widget/button.dart';
 import 'package:flutter_node_auth/services/stocks_services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StockTile extends StatefulWidget {
   final String stockName;
   final String ltp;
   final String prev;
+  final bool isNifty;
 
   const StockTile({
     super.key,
     required this.stockName,
     required this.ltp,
-    required this.prev,
+    required this.prev,  this.isNifty = true,
   });
 
   @override
@@ -40,7 +43,9 @@ class _StockTileState extends State<StockTile> {
     }
 
     return InkWell(
-      onTap: () => showBottomSheet(
+      onTap: () => 
+     
+     showBottomSheet(
         elevation: 10.0,
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
@@ -109,9 +114,12 @@ class _StockTileState extends State<StockTile> {
                       ColorButton(
                           color: Colors.blue,
                           title: 'BUY',
-                          onTap: () {
+                          onTap: () 
+                          
+                          {
                             Navigator.pop(context);
-                            Navigator.of(context).push(  MaterialPageRoute(
+                           widget.isNifty == false ? Get.snackbar('Message', 'Place order in nifty 50 stocks only')
+                                  :   Navigator.of(context).push(  MaterialPageRoute(
                                   builder: (context) => BuySellScreen(
                                       stockName: widget.stockName,
                                       price: ltP.toDouble(),
@@ -126,7 +134,9 @@ class _StockTileState extends State<StockTile> {
                       ColorButton(
                         color: Colors.red,
                         title: 'SELL',
-                        onTap: () {},
+                        onTap: () {
+                          Get.snackbar('Message', "Short selling isn't available yet!");
+                        },
                       )
                     ],
                   ),
@@ -166,6 +176,7 @@ class _StockTileState extends State<StockTile> {
           );
         },
       ),
+    
       //Stocks Watchlist
       child: Container(
         decoration: BoxDecoration(
@@ -186,8 +197,9 @@ class _StockTileState extends State<StockTile> {
                     children: [
                       Text(
                         widget.stockName,
-                        style: TextStyle(
-                            color: Colors.black87, fontWeight: FontWeight.w200),
+                       style: GoogleFonts.montserrat(
+                    fontSize: 14,fontWeight: FontWeight.w600,
+                  ),
                       ),
                       prevP < ltP
                           ? Text(
@@ -209,7 +221,9 @@ class _StockTileState extends State<StockTile> {
                     children: [
                       Text(
                         'NSE',
-                        style: TextStyle(color: Colors.black45),
+                         style: GoogleFonts.montserrat(
+                    fontSize: 14,fontWeight: FontWeight.w400,
+                  ),
                       ),
                       prevP > ltP
                           ? Text(
@@ -217,14 +231,14 @@ class _StockTileState extends State<StockTile> {
                                   "(" +
                                   updateChangePer() +
                                   "%)",
-                              style: TextStyle(color: Colors.black45),
+                              style: TextStyle(color: Colors.black45,fontWeight: FontWeight.w500),
                             )
                           : Text(
                               "+${(ltP - prevP).toStringAsFixed(2)}" +
                                   "(" +
                                   updateChangePer() +
                                   "%)",
-                              style: TextStyle(color: Colors.black45),
+                              style: TextStyle(color: Colors.black45,fontWeight: FontWeight.w500),
                             )
                     ],
                   ),

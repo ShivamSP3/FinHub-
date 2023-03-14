@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_node_auth/providers/userprovider.dart';
 import 'package:flutter_node_auth/features/auth/login_screen.dart';
 import 'package:flutter_node_auth/services/auth_services.dart';
 import 'package:flutter_node_auth/services/stocks_services.dart';
+import 'package:flutter_node_auth/utils/splash.dart';
+import 'package:flutter_node_auth/utils/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 void main() {
@@ -15,8 +19,6 @@ void main() {
     providers: [
       ChangeNotifierProvider(create:(_)=>UserProvider()),
       ChangeNotifierProvider(create:(_)=>NewsProvider()),
-
-
     ],
     child: const MyApp()));
 }
@@ -29,14 +31,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final AuthService authService = AuthService();
-  @override
+  AuthService authService = AuthService();
+    @override
   void initState() {
     // TODO: implement initState
     super.initState();
     authService.getUserData(context);
-   
-
   }
 
   // This widget is the root of your application.
@@ -45,10 +45,10 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FinHub',
-      
-      home: Provider.of<UserProvider>(context).user.token.isEmpty ?   LoginScreen()
-       : BottomNav()
-    
+      home: SplashScreen()
+      //  Provider.of<UserProvider>(context).user.token.isNotEmpty ? 
+      // SplashScreen(nextScreen: BottomNav()):LoginScreen() 
+      // SplashScreen(nextScreen: LoginScreen()) : SplashScreen(nextScreen: BottomNav())
     );
   }
 }

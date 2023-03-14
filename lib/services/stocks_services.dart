@@ -25,13 +25,21 @@ class StockServices{
   }
 
   Future<void> getStocksPrice(StreamController streamController)async{
+    var url = Uri.parse('http://192.168.85.188:3000/nse/get_index_stocks?symbol=nifty');
+    final response = await http.get(url);
+    final dataBody = jsonDecode(response.body);
+    StocksQuotes stocksQuotes = StocksQuotes.fromJson(dataBody);
+   streamController.sink.add(stocksQuotes);
+  }
+
+ Future<void> getStocksPriceBN(StreamController streamController)async{
     var url = Uri.parse('http://192.168.85.188:3000/nse/get_index_stocks?symbol=bankNifty');
     final response = await http.get(url);
     final dataBody = jsonDecode(response.body);
     StocksQuotes stocksQuotes = StocksQuotes.fromJson(dataBody);
     streamController.sink.add(stocksQuotes);
-   
   }
+
     void placeOrder({
     required BuildContext context,
     required String stockName,
