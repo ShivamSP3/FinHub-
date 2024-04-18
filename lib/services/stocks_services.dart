@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class StockServices{
   Future<String> marketStatus()async{
-    var url = Uri.parse('http://192.168.85.188:3000/get_market_status');
+    var url = Uri.parse('http://192.168.145.188:3000/get_market_status');
     final response = await http.get(url);
     final dataBody = jsonDecode(response.body);
 
@@ -25,7 +25,7 @@ class StockServices{
   }
 
   Future<void> getStocksPrice(StreamController streamController)async{
-    var url = Uri.parse('http://192.168.85.188:3000/nse/get_index_stocks?symbol=nifty');
+    var url = Uri.parse('http://192.168.145.188:3000/nse/get_index_stocks?symbol=nifty');
     final response = await http.get(url);
     final dataBody = jsonDecode(response.body);
     StocksQuotes stocksQuotes = StocksQuotes.fromJson(dataBody);
@@ -33,7 +33,7 @@ class StockServices{
   }
 
  Future<void> getStocksPriceBN(StreamController streamController)async{
-    var url = Uri.parse('http://192.168.85.188:3000/nse/get_index_stocks?symbol=bankNifty');
+    var url = Uri.parse('http://192.168.145.188:3000/nse/get_index_stocks?symbol=bankNifty');
     final response = await http.get(url);
     final dataBody = jsonDecode(response.body);
     StocksQuotes stocksQuotes = StocksQuotes.fromJson(dataBody);

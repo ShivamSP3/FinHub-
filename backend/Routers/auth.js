@@ -5,7 +5,7 @@ const User = require('../models/user');
 const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const auth = require('../middleware/auth');
-//sign up route 
+
 
 authRouter.post('/api/signup',async(req,res)=>{
 
@@ -61,7 +61,6 @@ authRouter.post('/tokenIsValid',async(req,res)=>{
     res.status(500).json({error:e.message});
   }
 });
-//get user data
 authRouter.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
   res.json({ ...user._doc, token: req.token });

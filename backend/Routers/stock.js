@@ -9,13 +9,12 @@ stockRouter.post('/stock/order-buy',auth,async(req,res)=>{
      const { stockName , qty, buyPrice,stockId} = req.body;
      let user = await User.findById(req.user);
        user.trades.push({stockName , qty, buyPrice,stockId})
-       user =await user.save();
+       user = await user.save();
        res.json(user);
   } catch (e) {
      res.status(500).json({error:e.message});
   }
  });
-
 stockRouter.get('/stock/order/me',auth,async(req,res)=>{
 try {
   const user = await User.findById(req.user);

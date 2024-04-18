@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_node_auth/features/watchlist/screens/watchlist_tab.dart';
 import 'package:flutter_node_auth/features/watchlist/widget/stock_shimmer.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_node_auth/features/watchlist/widget/stock_tile.dart';
 import 'package:flutter_node_auth/models/stocks.dart';
 import 'package:flutter_node_auth/services/auth_services.dart';
 import 'package:flutter_node_auth/services/stocks_services.dart';
+import 'package:flutter_node_auth/utils/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WatchList extends StatefulWidget {
@@ -22,7 +24,7 @@ class _WatchListState extends State<WatchList> {
    final StockServices stockServices = StockServices();
 
  String? status;
-
+   StocksQuotes quotes = StocksQuotes.fromJson(niftyData);
   String isFirst = 'N';
   @override
   void dispose() {
@@ -253,12 +255,71 @@ class _WatchListState extends State<WatchList> {
           ),
           isFirst=='N'? 
              Expanded(
-            child: StreamBuilder<StocksQuotes>(
+            child: StreamBuilder<StocksQuotes> (
               stream: _streamController.stream,
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
+                  
                   case ConnectionState.waiting:
-                    return StockShimmer();
+                 
+               return  Column(
+                          children: [
+                            // Container(
+                            //   margin: EdgeInsets.symmetric(
+                            //       horizontal: 20, vertical: 15),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text(snapshot.data!.latestData[0].indexName,
+                            //           style: TextStyle(
+                            //               fontSize: 20,
+                            //               fontWeight: FontWeight.w600)),
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.end,
+                            //         children: [
+                            //           Text(
+                            //               snapshot.data!.latestData[0].ltp +
+                            //                   "   ",
+                            //               style: TextStyle(
+                            //                   fontSize: 20,
+                            //                   fontWeight: FontWeight.w100)),
+                            //           (snapshot.data!.latestData[0].ch
+                            //                   .startsWith("-"))
+                            //               ? Text(
+                            //                   snapshot.data!.latestData[0].ch +
+                            //                       "   " +
+                            //                      quotes.latestData[0].per +
+                            //                       "%",
+                            //                   style: TextStyle(
+                            //                       color: Colors.red,
+                            //                       fontSize: 16,
+                            //                       fontWeight: FontWeight.w100))
+                            //               : Text(
+                            //                   quotes.latestData[0].ch +
+                            //                       "   " +
+                            //                       snapshot
+                            //                           .data!.latestData[0].per +
+                            //                       "%",
+                            //                   style: TextStyle(
+                            //                       color: Colors.green,
+                            //                       fontSize: 16,
+                            //                       fontWeight: FontWeight.w100)),
+                            //         ],
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
+                            SizedBox(height: 20,),
+                            Expanded(
+                                child: GetStockDetailWidget(quotes)),
+                          ],
+                      
+                      ); 
+                 
+                      
+                      
+                   
                   default:
                     if (snapshot.hasError) {
                       return Center(child: Text('Please Wait'));
@@ -319,6 +380,7 @@ class _WatchListState extends State<WatchList> {
                           ],
                         ),
                       );
+                   
                     }
                 }
               },

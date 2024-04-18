@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final AuthService authService = AuthService();
   final _signInFormKey = GlobalKey<FormState>();
-
+  
   void loginUser() {
     authService.signInUser(
       context: context,
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.15,),
+              SizedBox(height: MediaQuery.of(context).size.height*0.15,),
               const Text(
                 "Login",
                 style: TextStyle(fontSize: 30),

@@ -9,6 +9,7 @@ import 'package:flutter_node_auth/features/watchlist/widget/stock_shimmer.dart';
 import 'package:flutter_node_auth/models/order.dart';
 import 'package:flutter_node_auth/models/stocks.dart';
 import 'package:flutter_node_auth/services/stocks_services.dart';
+import 'package:flutter_node_auth/utils/constants.dart';
 import 'package:get/get.dart';
 
 class Positions extends StatefulWidget {
@@ -22,6 +23,7 @@ class _PositionsState extends State<Positions> {
     List<Order>? orders=[];
     final StockServices stockServices = StockServices();
   StreamController<StocksQuotes> _streamController = StreamController.broadcast();
+   StocksQuotes quotes = StocksQuotes.fromJson(niftyData);
 
   @override
   void dispose() {
@@ -106,7 +108,28 @@ class _PositionsState extends State<Positions> {
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return StockShimmer();
+               return   Container(
+              child: Expanded(
+                flex: 2,
+                child: ListView.builder(
+                  itemCount: orders!.length,
+                  itemBuilder: (context, index) {
+                    String stockN= '';
+                    String stockLTP= '0';
+                    for (var j = 0; j < quotes.data.length; j++) {
+                       if (orders![index].stockName==quotes.data[j].symbol) {
+                        stockN=quotes.data[j].symbol;
+                         print(stockLTP);
+                          stockLTP=quotes.data[j].ltP.replaceAll(",", '');
+                       break;
+                     }
+                     }
+                  return IntradayTile(
+                    onTap:()=> deleteTrade(orders![index].tradeId!),
+                    stockName: orders![index].stockName, qty: orders![index].qty, avg: orders![index].buyPrice.toDouble(), ltp:double.parse(stockLTP));
+                },),
+              ),
+            );
                 default:
                   if (snapshot.hasError) {
                     return Center(child: Text('Please Wait'));
